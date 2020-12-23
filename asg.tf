@@ -14,4 +14,5 @@ resource "aws_autoscaling_group" "bar" {
     id                      = aws_launch_template.asg.id
     version                 = "$Latest"
   }
+  vpc_zone_identifier       = []
 }
