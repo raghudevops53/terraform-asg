@@ -12,5 +12,6 @@ resource "aws_autoscaling_group" "bar" {
   force_delete              = true
   launch_template {
     id                      = aws_launch_template.asg.id
+    version                 = "$Latest"
   }
 }
