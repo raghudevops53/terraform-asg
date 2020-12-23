@@ -14,5 +14,5 @@ resource "aws_autoscaling_group" "bar" {
     id                      = aws_launch_template.asg.id
     version                 = "$Latest"
   }
-  vpc_zone_identifier       = []
+  vpc_zone_identifier       = data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNETS
 }
