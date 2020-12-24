@@ -15,4 +15,15 @@ resource "aws_autoscaling_group" "bar" {
     version                 = "$Latest"
   }
   vpc_zone_identifier       = data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNETS
+  target_group_arns         = [aws_lb_target_group.tg.arn]
+}
+
+resource "aws_lb_target_group" "tg" {
+  name                      = "${var.COMPONENT}-${var.ENV}-tg"
+  port                      = var.PORT
+  protocol                  = "HTTP"
+  vpc_id                    = data.terraform_remote_state.vpc.outputs.VPC_ID
+  health_check {
+    path                    = var.HEALTH
+  }
 }
