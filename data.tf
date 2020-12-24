@@ -1,6 +1,11 @@
 data "aws_ami" "ami" {
   most_recent       = true
-  owners            = ["973714476881"]
+  owners            = ["self"]
+
+  filter {
+    name            = "name"
+    values          = [var.COMPONENT]
+  }
 }
 
 data "terraform_remote_state" "vpc" {
