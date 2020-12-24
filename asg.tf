@@ -2,7 +2,7 @@ resource "aws_launch_template" "asg" {
   name                    = "${var.COMPONENT}-${var.ENV}-template"
   image_id                = data.aws_ami.ami.id
   instance_type           = var.INSTANCE_TYPE
-  vpc_security_group_ids  = []
+  vpc_security_group_ids  = [aws_security_group.allow-component.id]
 }
 
 resource "aws_autoscaling_group" "bar" {
@@ -39,7 +39,15 @@ resource "aws_security_group" "allow-component" {
     from_port               = 22
     to_port                 = 22
     protocol                = "tcp"
-    cidr_blocks             = ["0.0.0.0/0"]
+    cidr_blocks             = [data.terraform_remote_state.vpc.outputs.VPC_CIDR, data.terraform_remote_state.vpc.outputs.DEFAULT_VPC_CIDR]
+  }
+
+  ingress {
+    description             = "HTTP"
+    from_port               = 80
+    to_port                 = 80
+    protocol                = "tcp"
+    cidr_blocks             = [data.terraform_remote_state.vpc.outputs.VPC_CIDR]
   }
 
   egress {
