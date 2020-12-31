@@ -5,7 +5,7 @@ resource "aws_launch_template" "asg" {
   vpc_security_group_ids    = [aws_security_group.allow-component.id]
 }
 
-resource "aws_autoscaling_group" "bar" {
+resource "aws_autoscaling_group" "asg" {
   name                      = "${var.COMPONENT}-${var.ENV}-asg"
   max_size                  = 1
   min_size                  = 1
@@ -23,7 +23,7 @@ resource "aws_autoscaling_group" "bar" {
     value                   = "${var.COMPONENT}-${var.ENV}"
     propagate_at_launch     = true
   }
-  
+
 }
 
 resource "aws_lb_target_group" "tg" {
