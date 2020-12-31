@@ -51,8 +51,8 @@ resource "aws_security_group" "allow-component" {
 
   ingress {
     description             = "HTTP"
-    from_port               = 80
-    to_port                 = 80
+    from_port               = var.PORT
+    to_port                 = var.PORT
     protocol                = "tcp"
     cidr_blocks             = [data.terraform_remote_state.vpc.outputs.VPC_CIDR]
   }
