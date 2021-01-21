@@ -4,7 +4,7 @@ data "aws_ami" "ami" {
 
   filter {
     name            = "name"
-    values          = [var.COMPONENT]
+    values          = ["${var.COMPONENT}-${var.APP_ARTIFACT_VERSION}"]
   }
 }
 
