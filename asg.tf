@@ -50,6 +50,14 @@ resource "aws_security_group" "allow-component" {
   }
 
   ingress {
+    description             = "PROMETHEUS"
+    from_port               = 9100
+    to_port                 = 9100
+    protocol                = "tcp"
+    cidr_blocks             = [data.terraform_remote_state.vpc.outputs.VPC_CIDR, data.terraform_remote_state.vpc.outputs.DEFAULT_VPC_CIDR]
+  }
+
+  ingress {
     description             = "HTTP"
     from_port               = var.PORT
     to_port                 = var.PORT
