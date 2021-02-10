@@ -7,7 +7,7 @@ resource "aws_launch_template" "asg" {
 
 resource "aws_autoscaling_group" "asg" {
   name                      = "${var.COMPONENT}-${var.ENV}-asg"
-  max_size                  = 1
+  max_size                  = var.ASG_MAX_INSTANCES
   min_size                  = 1
   desired_capacity          = 1
   force_delete              = true
@@ -24,6 +24,20 @@ resource "aws_autoscaling_group" "asg" {
     propagate_at_launch     = true
   }
 
+}
+
+resource "aws_autoscaling_policy" "bat" {
+  name                      = "cpu-based"
+  adjustment_type           = "ChangeInCapacity"
+  policy_type               = "TargetTrackingScaling"
+  estimated_instance_warmup = "120"
+  autoscaling_group_name    = aws_autoscaling_group.asg.name
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value            = var.ASG_LOAD_AVERAGE
+  }
 }
 
 resource "aws_lb_target_group" "tg" {
